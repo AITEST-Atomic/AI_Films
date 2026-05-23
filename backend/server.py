@@ -255,15 +255,14 @@ STEPS_DATA = [
                 "items": [
                     "Export your final AI film",
                     "Open Instagram \u2192 New Reel \u2192 Upload",
-                    "Tag @aifilmmakersofficial and @harry_ranveer_the_videopreneur in the post"
+                    "Tag @aifilmmakersofficial in the post"
                 ]
             },
             "bonus": {
-                "title": "Tap into Harry's & AFM's network.",
+                "title": "Tap into AFM's network.",
                 "subtitle": "BONUS \u00b7 TOP 13 AI FILM MAKERS ONLY",
                 "description": "The top 13 AI Film Makers get to collab their reel with us on Instagram \u2014 massive reach, real exposure, and a place in our community.",
                 "links": [
-                    {"label": "Collab with Harry Ranveer", "url": "https://www.instagram.com/harry_ranveer_the_videopreneur/"},
                     {"label": "Collab with AI Film Makers Official", "url": "https://www.instagram.com/aifilmmakersofficial/"}
                 ],
                 "footnote": "DM us your AI film once posted. Top picks get featured."

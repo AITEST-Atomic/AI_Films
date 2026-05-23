@@ -123,7 +123,7 @@ export const Sidebar = ({ steps, progress, currentLevel, nextBadge, onStepClick,
 
       {/* Footer */}
       <div className="px-4 py-3 border-t border-white/[0.06]">
-        <p className="text-[10px] text-zinc-600 text-center mb-2">AFM Workshop by Harry & Ranveer</p>
+        <p className="text-[10px] text-zinc-600 text-center mb-2">AFM Workshop</p>
         <button
           data-testid="sidebar-reset-progress-button"
           onClick={progress.resetProgress}
