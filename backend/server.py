@@ -88,7 +88,7 @@ STEPS_DATA = [
         "prompts": [
             {
                 "title": "Creative Director Concept",
-                "body": "Use the Custom GPT link below to generate your cinematic concept. Share your target audience from Step 1 and let the AI craft your storyline.\n\nTip: Be specific about the brand, emotion, and duration (30 seconds). The more detail you give, the better the concept."
+                "body": "Assume you are a world class level of creative director and a visual story teller. Who is extremely good at prompting as well. Help me craft a 30 seconds Brand Video Storyline for a [INDUSTRY NAME] brand named \"[PUT THE NAME HERE]\"\n\nI want you to come up with an extremely short and beautiful concept that can help my brand accomplish its goal.\n\nREMEMBER there should be a VoiceOver. The Voiceover should be in the form of a goosebumps-level POETRY/RAP/SONG/NARRATION version. Rest visuals should consist of NO DIALOGUES between people talking to each other.\n\nYou are allowed to ask me top 5 questions that can help you to craft the best story possible. Question like, What emotion of the video do you want the viewer to feel?, Style of video (3D, HyperRealistic etc). Make sure you give options to each question, so that i can copy and paste."
             }
         ],
         "resources": [
