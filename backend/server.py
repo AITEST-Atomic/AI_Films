@@ -38,7 +38,7 @@ STEPS_DATA = [
         "emoji": "\U0001f3af",
         "title": "Find Your Target",
         "subtitle": "STEP 1",
-        "heading": "The \u20b950k/m AI Film Maker's Blueprint",
+        "heading": "AI Film Making Blueprint",
         "description": "This step is about finding who exactly you want to create your AI film for. Choose your audience first \u2014 everything else flows from this.",
         "badgeName": "Client Hunter",
         "badgeIcon": "\U0001f3af",
@@ -74,7 +74,7 @@ STEPS_DATA = [
         "emoji": "\U0001f4a1",
         "title": "Million-Dollar Concept",
         "subtitle": "STEP 2",
-        "heading": "Your $Million Short Film Concept",
+        "heading": "AI Short Film Concept",
         "description": "Craft a 30-second cinematic brand storyline using the GPT below. This is where your film idea comes to life \u2014 from concept to script.",
         "badgeName": "Concept Crafter",
         "badgeIcon": "\U0001f4a1",
@@ -166,7 +166,8 @@ STEPS_DATA = [
         ],
         "prompts": [],
         "resources": [
-            {"label": "Google Vids Engine", "url": "https://labs.google/fx/tools/video-fx"}
+            {"label": "Google Vids Engine", "url": "https://labs.google/fx/tools/video-fx"},
+            {"label": "Google Flow", "url": "https://labs.google/fx/tools/flow"}
         ]
     },
     {
@@ -203,7 +204,8 @@ STEPS_DATA = [
         "resources": [
             {"label": "Lyria (Google DeepMind)", "url": "https://aitestkitchen.withgoogle.com/tools/music-fx"},
             {"label": "Suno (Songs)", "url": "https://suno.com/"},
-            {"label": "Minimax (Advanced Audio)", "url": "https://minimax.chat/"}
+            {"label": "Minimax (Advanced Audio)", "url": "https://minimax.chat/"},
+            {"label": "Eleven Labs", "url": "https://elevenlabs.io/"}
         ]
     },
     {
@@ -234,7 +236,7 @@ STEPS_DATA = [
         "title": "Finale",
         "subtitle": "FINALE",
         "heading": "CONGRATULATIONS, Director.",
-        "description": "You've completed the entire AI Film Maker's workflow. You now have the skills, tools, and prompts to create cinematic AI films for any brand.",
+        "description": "You've completed the entire AI Film Making workflow. You now have the skills, tools, and prompts to create cinematic AI films for any brand.",
         "badgeName": "Executive Director",
         "badgeIcon": "\U0001f3c6",
         "interactive": None,
@@ -242,31 +244,7 @@ STEPS_DATA = [
         "prompts": [],
         "resources": [],
         "finaleExtras": {
-            "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-            "successStory": {
-                "emoji_before": "\U0001f4bc",
-                "emoji_after": "\U0001f3ac",
-                "text": "If Omkaar, an Investment Banker with ZERO experience, can post his work on Instagram and close a client for \u20b910K per AI Film\u2026",
-                "highlight": "YOU CAN DO IT TOO."
-            },
-            "doThisNow": {
-                "title": "The moment your AI Film is ready \u2014 post it on Instagram. Immediately.",
-                "description": "Don't wait. Don't perfect it. Posting fast is the most underrated skill in filmmaking. Reels format works best.",
-                "items": [
-                    "Export your final AI film",
-                    "Open Instagram \u2192 New Reel \u2192 Upload",
-                    "Tag @aifilmmakersofficial in the post"
-                ]
-            },
-            "bonus": {
-                "title": "Tap into AFM's network.",
-                "subtitle": "BONUS \u00b7 TOP 13 AI FILM MAKERS ONLY",
-                "description": "The top 13 AI Film Makers get to collab their reel with us on Instagram \u2014 massive reach, real exposure, and a place in our community.",
-                "links": [
-                    {"label": "Collab with AI Film Makers Official", "url": "https://www.instagram.com/aifilmmakersofficial/"}
-                ],
-                "footnote": "DM us your AI film once posted. Top picks get featured."
-            }
+            "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
         }
     }
 ]
