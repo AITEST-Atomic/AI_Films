@@ -22,9 +22,9 @@ export const Sidebar = ({ steps, progress, currentLevel, nextBadge, onStepClick,
           </div>
           <div>
             <h1 className="text-sm font-semibold text-zinc-100 leading-tight" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-              AI Film Maker's Workflow
+              AI Film Making Process Workflow
             </h1>
-            <p className="text-xs text-zinc-500 mt-0.5">The Videopreneur's OS</p>
+            <p className="text-xs text-zinc-500 mt-0.5"></p>
           </div>
         </div>
       </div>
