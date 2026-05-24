@@ -1,0 +1,48 @@
+# Docker
+Dockerfile.frontend
+Dockerfile.backend
+docker-compose.yml
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+frontend/node_modules
+frontend/.env.local
+frontend/build
+
+# Python
+backend/__pycache__
+backend/*.pyc
+backend/.pytest_cache
+backend/venv
+backend/.venv
+
+# Logs
+*.log
+/var/log
+
+# Tests
+tests/
+test_reports/
+
+# Docs
+*.md
+!ssl/README.md
+
+# Misc
+plan.md
+design_guidelines.md
+test_result.md
