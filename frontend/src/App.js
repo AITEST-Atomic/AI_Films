@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "@/App.css";
 import axios from "axios";
 import { Toaster } from "@/components/ui/sonner";
 import { Sidebar } from "@/components/Sidebar";
 import { StepContent } from "@/components/StepContent";
 import { MobileHeader } from "@/components/MobileHeader";
+import { LandingPage } from "@/components/LandingPage";
 import { useWorkshopProgress } from "@/hooks/useWorkshopProgress";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-function App() {
+function WorkshopPage() {
   const [steps, setSteps] = useState([]);
   const [currentStepData, setCurrentStepData] = useState(null);
   const [directorLevels, setDirectorLevels] = useState([]);
@@ -127,9 +129,19 @@ function App() {
           totalSteps={8}
         />
       </div>
-
-      <Toaster position="bottom-right" theme="dark" />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/workshop" element={<WorkshopPage />} />
+      </Routes>
+      <Toaster position="bottom-right" theme="dark" />
+    </BrowserRouter>
   );
 }
 
