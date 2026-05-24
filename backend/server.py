@@ -408,6 +408,94 @@ LIPSYNC_STEPS_DATA = [
     }
 ]
 
+# ============ VFX WORKSPACE DATA ============
+VFX_STEPS_DATA = [
+    {
+        "order": 1,
+        "title": "#1 Product Placement WorkFlow",
+        "description": "Use Gemini's 'Draw to Edit' feature to seamlessly integrate and manipulate the product onto the subject.",
+        "locked": False,
+        "actionItems": [
+            "Go to Gemini.",
+            "Add your hero photo containing the product.",
+            "Select the 'Draw' option.",
+            "Draw exactly on the area that needs to be edited (direction, product integration).",
+            "Write your editing instructions in the prompt box.",
+            "Hit Enter and wait for generation."
+        ],
+        "prompts": [
+            {
+                "title": "Jewellery Replacement Prompt",
+                "body": "Can you replace the jewellery in image 2 [the lady is wearing in her neck] with jewellery in image 1.\n\n1920*1080"
+            }
+        ],
+        "resources": [
+            {"label": "Sample Jewellery set", "url": "https://drive.google.com/file/d/1wA5hiUxuIR9RMhAZUbE91K_rpiWAyBYI/view?usp=sharing"},
+            {"label": "Sample Female Model", "url": "https://drive.google.com/file/d/189NvKA15IbA3d1twQ47RHvbtwoFGZE7w/view?usp=sharing"}
+        ]
+    },
+    {
+        "order": 2,
+        "title": "#2 Character Replacement Workflow",
+        "description": "Transform your base image into a cinematic sequence by matching reference Hollywood shots.",
+        "locked": False,
+        "actionItems": [
+            "Check your reference Hollywood shot for mood, lighting, and composition.",
+            "Click/capture your photo inside the camera mimicking a similar shot angle.",
+            "Import into Gemini or ChatGPT.",
+            "Replace the background with your photo using the prompt below."
+        ],
+        "prompts": [
+            {
+                "title": "Cinematic Background Replacement",
+                "body": "Extract the main subject from image 2 and place them into a dramatic cinematic Hollywood scene of image 1. Match the ambient lighting, color grading, and depth of field of the provided reference."
+            }
+        ],
+        "resources": [
+            {"label": "#1 HarryPotter & BuckBeak", "url": "https://drive.google.com/file/d/1TnT1vQMbrQY5yHbqs4nhssj65qnszHz-/view?usp=sharing"},
+            {"label": "#2 HarryPotter Group Finalize", "url": "https://drive.google.com/file/d/1drXEy19vd4hpJ5G1ro8BKOJBwpndJRus/view?usp=sharing"},
+            {"label": "#3 Harry getting his wand", "url": "https://drive.google.com/file/d/1wkC25uVrJcbK7df9ruoMLAFOnJ5J1WKM/view?usp=sharing"},
+            {"label": "ChatGPT", "url": "https://chatgpt.com/"}
+        ]
+    },
+    {
+        "order": 3,
+        "title": "#3 Background Replacement Workflow",
+        "description": "This advanced background replacement section is strictly confidential.",
+        "locked": True,
+        "actionItems": [],
+        "prompts": [],
+        "resources": []
+    },
+    {
+        "order": 4,
+        "title": "Step 2: Animate Frames",
+        "description": "Feed your newly generated, perfectly framed still images into the designated video model for animation.",
+        "locked": False,
+        "actionItems": [
+            "Export the completed images from Gemini.",
+            "Upload the images into our primary Video Model.",
+            "Configure the motion parameters to match the scene.",
+            "Initiate the video generation process."
+        ],
+        "prompts": [],
+        "resources": []
+    },
+    {
+        "order": 5,
+        "title": "Step 3: Shot to Timeline",
+        "description": "Integrate the output into the master timeline and loop the process for subsequent shots.",
+        "locked": False,
+        "actionItems": [
+            "Add the generated video clip to our master Workflow timeline.",
+            "Review the clip for continuity and quality.",
+            "Repeat the same steps (1 through 4) for the next shot."
+        ],
+        "prompts": [],
+        "resources": []
+    }
+]
+
 # ============ SEED ON STARTUP ============
 @app.on_event("startup")
 async def seed_data():
@@ -448,6 +536,15 @@ async def seed_data():
             upsert=True
         )
     logger.info(f"Seeded/updated {len(LIPSYNC_STEPS_DATA)} lip sync steps")
+
+    # Seed VFX workspace steps
+    for step in VFX_STEPS_DATA:
+        await db.vfx_steps.update_one(
+            {"order": step["order"]},
+            {"$set": step},
+            upsert=True
+        )
+    logger.info(f"Seeded/updated {len(VFX_STEPS_DATA)} VFX steps")
 
 # ============ ROUTES ============
 @api_router.get("/")
@@ -493,6 +590,24 @@ async def get_lipsync_step(order: int):
     step = await db.lipsync_steps.find_one({"order": order}, {"_id": 0})
     if not step:
         raise HTTPException(status_code=404, detail="Lip sync step not found")
+    return step
+
+# ============ VFX WORKSPACE ROUTES ============
+@api_router.get("/vfx/steps")
+async def get_vfx_steps():
+    """Get minimal VFX step data for sidebar"""
+    steps = await db.vfx_steps.find(
+        {},
+        {"_id": 0, "order": 1, "title": 1, "locked": 1}
+    ).sort("order", 1).to_list(20)
+    return steps
+
+@api_router.get("/vfx/steps/{order}")
+async def get_vfx_step(order: int):
+    """Get full VFX step content"""
+    step = await db.vfx_steps.find_one({"order": order}, {"_id": 0})
+    if not step:
+        raise HTTPException(status_code=404, detail="VFX step not found")
     return step
 
 # ============ PROGRESS SYNC ROUTES ============

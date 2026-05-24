@@ -1,18 +1,18 @@
 [
   {
-    "content": "Phase 4: Backend - LIP Sync steps data + API endpoints",
+    "content": "Phase 5: Backend - VFX Workspace steps data + API endpoints",
     "status": "completed"
   },
   {
-    "content": "Phase 4: Frontend - LipSync workshop page component",
+    "content": "Phase 5: Frontend - VFX Workspace page component",
     "status": "completed"
   },
   {
-    "content": "Phase 4: Update landing page card 2 to link to /lip-sync",
+    "content": "Phase 5: Update landing page card 3 to link to /vfx-workspace",
     "status": "completed"
   },
   {
-    "content": "Phase 4: End to End Testing",
+    "content": "Phase 5: Verify all steps render correctly",
     "status": "completed"
   }
 ]

@@ -8,6 +8,7 @@ import { StepContent } from "@/components/StepContent";
 import { MobileHeader } from "@/components/MobileHeader";
 import { LandingPage } from "@/components/LandingPage";
 import { LipSyncWorkshop } from "@/components/LipSyncWorkshop";
+import { VFXWorkshop } from "@/components/VFXWorkshop";
 import { useWorkshopProgress } from "@/hooks/useWorkshopProgress";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -141,6 +142,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/workshop" element={<WorkshopPage />} />
         <Route path="/lip-sync" element={<LipSyncWorkshop />} />
+        <Route path="/vfx-workspace" element={<VFXWorkshop />} />
       </Routes>
       <Toaster position="bottom-right" theme="dark" />
     </BrowserRouter>
