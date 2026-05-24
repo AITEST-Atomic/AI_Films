@@ -6,15 +6,15 @@ import { ResourceLinks } from "@/components/ResourceLinks";
 import { ChoiceCards } from "@/components/ChoiceCards";
 import { FinaleStep } from "@/components/FinaleStep";
 import { InfoCard } from "@/components/InfoCard";
-import { ChevronLeft, ChevronRight, Sparkles, Loader2 } from "lucide-react";
+import { StepSkeleton } from "@/components/StepSkeleton";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 
 export const StepContent = ({ stepData, loading, progress, onComplete, onPrevious, totalSteps }) => {
+  const prefersReducedMotion = useReducedMotion();
+
   if (loading || !stepData) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-8 h-8 text-amber-400 animate-spin" />
-      </div>
-    );
+    return <StepSkeleton />;
   }
 
   const isCompleted = progress.isStepCompleted(stepData.order);
@@ -36,10 +36,10 @@ export const StepContent = ({ stepData, loading, progress, onComplete, onPreviou
     <AnimatePresence mode="wait">
       <motion.div
         key={stepData.order}
-        initial={{ opacity: 0, y: 8 }}
+        initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.25 }}
+        exit={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.25 }}
         className="max-w-[860px] mx-auto px-4 sm:px-6 lg:px-10 py-6 md:py-10"
       >
         {/* Step indicator pills */}

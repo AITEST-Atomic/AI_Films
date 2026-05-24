@@ -123,7 +123,20 @@ export const Sidebar = ({ steps, progress, currentLevel, nextBadge, onStepClick,
 
       {/* Footer */}
       <div className="px-4 py-3 border-t border-white/[0.06]">
-        <p className="text-[10px] text-zinc-600 text-center mb-2">AFM Workshop</p>
+        <div className="flex items-center justify-center gap-1.5 mb-2">
+          <p className="text-[10px] text-zinc-600 text-center">AFM Workshop</p>
+          {progress.syncing && (
+            <div className="flex items-center gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-[9px] text-zinc-600">syncing</span>
+            </div>
+          )}
+        </div>
+        {progress.sessionId && (
+          <p className="text-[9px] text-zinc-700 text-center mb-1.5 font-mono truncate" title={`Session: ${progress.sessionId}`}>
+            Session: {progress.sessionId.slice(0, 16)}...
+          </p>
+        )}
         <button
           data-testid="sidebar-reset-progress-button"
           onClick={progress.resetProgress}

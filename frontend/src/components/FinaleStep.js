@@ -3,22 +3,25 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { ChevronLeft, Sparkles, Trophy, ExternalLink, Instagram, ArrowRight, Star } from "lucide-react";
 import { ActionItems } from "@/components/ActionItems";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompleted }) => {
   const confettiFired = useRef(false);
   const [showContent, setShowContent] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!confettiFired.current) {
+    if (!confettiFired.current && !prefersReducedMotion) {
       confettiFired.current = true;
-      fireConfetti();
+      fireConfettiEffect();
     }
-    const timer = setTimeout(() => setShowContent(true), 600);
+    const delay = prefersReducedMotion ? 0 : 600;
+    const timer = setTimeout(() => setShowContent(true), delay);
     return () => clearTimeout(timer);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefersReducedMotion]);
 
-  const fireConfetti = () => {
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fireConfettiEffect = () => {
     if (prefersReducedMotion) return;
 
     const count = 200;
@@ -52,9 +55,9 @@ export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompl
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={prefersReducedMotion ? {} : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
       className="max-w-[860px] mx-auto px-4 sm:px-6 lg:px-10 py-6 md:py-10"
     >
       {/* Step indicator */}
@@ -69,9 +72,9 @@ export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompl
 
       {/* Hero congratulations */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
         animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 20 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: prefersReducedMotion ? 0 : 0.2 }}
         className="text-center py-8 mb-8"
       >
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-amber-500/15 border border-amber-500/25 mb-6">
@@ -90,9 +93,9 @@ export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompl
 
         {/* Earned title */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.9 }}
           animate={{ opacity: showContent ? 1 : 0, scale: showContent ? 1 : 0.9 }}
-          transition={{ duration: 0.4, delay: 0.6 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.4, delay: prefersReducedMotion ? 0 : 0.6 }}
           className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/25"
         >
           <Star className="w-4 h-4 text-amber-400" />
@@ -104,9 +107,9 @@ export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompl
       {/* But Wait... YouTube Section */}
       {extras.videoUrl && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={prefersReducedMotion ? {} : { opacity: 0, y: 20 }}
           animate={{ opacity: showContent ? 1 : 0, y: showContent ? 0 : 20 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.5, delay: prefersReducedMotion ? 0 : 0.4 }}
           className="mb-8"
         >
           <h2 className="text-xl font-semibold text-zinc-100 mb-1 text-center" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
@@ -246,7 +249,7 @@ export const FinaleStep = ({ stepData, progress, onPrevious, onComplete, isCompl
           data-testid="complete-and-continue-button"
           onClick={() => {
             onComplete();
-            fireConfetti();
+            fireConfettiEffect();
           }}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium bg-amber-500 text-black hover:bg-amber-400 transition-colors duration-150 shadow-lg shadow-amber-500/20"
         >

@@ -351,6 +351,42 @@ async def get_director_levels():
     levels = await db.director_levels.find({}, {"_id": 0}).sort("min_steps", 1).to_list(20)
     return levels
 
+# ============ PROGRESS SYNC ROUTES ============
+class ProgressPayload(BaseModel):
+    sessionId: str
+    completedSteps: List[int] = []
+    step1Choice: Optional[str] = None
+    currentStep: int = 1
+
+@api_router.post("/progress")
+async def save_progress(payload: ProgressPayload):
+    """Save user progress for cross-device sync"""
+    await db.progress.update_one(
+        {"sessionId": payload.sessionId},
+        {
+            "$set": {
+                "sessionId": payload.sessionId,
+                "completedSteps": payload.completedSteps,
+                "step1Choice": payload.step1Choice,
+                "currentStep": payload.currentStep,
+                "updatedAt": datetime.now(timezone.utc).isoformat(),
+            }
+        },
+        upsert=True
+    )
+    return {"status": "ok"}
+
+@api_router.get("/progress/{session_id}")
+async def get_progress(session_id: str):
+    """Load user progress by session ID"""
+    progress = await db.progress.find_one(
+        {"sessionId": session_id},
+        {"_id": 0}
+    )
+    if not progress:
+        raise HTTPException(status_code=404, detail="No progress found for this session")
+    return progress
+
 # Include the router in the main app
 app.include_router(api_router)
 
