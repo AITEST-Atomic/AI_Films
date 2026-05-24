@@ -1,9 +1,11 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
-import { Check, RotateCcw, Film } from "lucide-react";
+import { Check, RotateCcw, Film, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = ({ steps, progress, currentLevel, nextBadge, onStepClick, directorLevels }) => {
+  const navigate = useNavigate();
   const nextBadgeForLevel = () => {
     if (!directorLevels || directorLevels.length === 0) return null;
     const sorted = [...directorLevels].sort((a, b) => a.min_steps - b.min_steps);
@@ -16,6 +18,9 @@ export const Sidebar = ({ steps, progress, currentLevel, nextBadge, onStepClick,
     <div className="flex flex-col h-full" data-testid="sidebar">
       {/* Brand */}
       <div className="px-4 py-5 border-b border-white/[0.06]">
+        <button onClick={() => navigate("/")} className="flex items-center gap-2 mb-3 text-zinc-500 hover:text-zinc-300 text-xs transition-colors">
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Trainings
+        </button>
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20">
             <Film className="w-5 h-5 text-amber-400" />
