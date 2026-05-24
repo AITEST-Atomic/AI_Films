@@ -523,9 +523,9 @@ VFX_STEPS_DATA = [
             }
         ],
         "resources": [
-            {"label": "#1 HarryPotter & BuckBeak", "url": "https://drive.google.com/file/d/1TnT1vQMbrQY5yHbqs4nhssj65qnszHz-/view?usp=sharing"},
-            {"label": "#2 HarryPotter Group Finalize", "url": "https://drive.google.com/file/d/1drXEy19vd4hpJ5G1ro8BKOJBwpndJRus/view?usp=sharing"},
-            {"label": "#3 Harry getting his wand", "url": "https://drive.google.com/file/d/1wkC25uVrJcbK7df9ruoMLAFOnJ5J1WKM/view?usp=sharing"},
+            {"label": "#1 Reference Shot - BuckBeak", "url": "https://drive.google.com/file/d/1TnT1vQMbrQY5yHbqs4nhssj65qnszHz-/view?usp=sharing"},
+            {"label": "#2 Reference Shot - Group Finalize", "url": "https://drive.google.com/file/d/1drXEy19vd4hpJ5G1ro8BKOJBwpndJRus/view?usp=sharing"},
+            {"label": "#3 Reference Shot - Wand Scene", "url": "https://drive.google.com/file/d/1wkC25uVrJcbK7df9ruoMLAFOnJ5J1WKM/view?usp=sharing"},
             {"label": "ChatGPT", "url": "https://chatgpt.com/"}
         ]
     },
