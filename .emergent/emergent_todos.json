@@ -1,18 +1,18 @@
 [
   {
-    "content": "Phase 3: Skeleton loading states for step content",
+    "content": "Phase 4: Backend - LIP Sync steps data + API endpoints",
     "status": "completed"
   },
   {
-    "content": "Phase 3: Reduced-motion support for animations & confetti",
+    "content": "Phase 4: Frontend - LipSync workshop page component",
     "status": "completed"
   },
   {
-    "content": "Phase 3: Backend progress mirroring (POST/GET /api/progress) for cross-device sync",
+    "content": "Phase 4: Update landing page card 2 to link to /lip-sync",
     "status": "completed"
   },
   {
-    "content": "Phase 3: End to End Testing using Testing Agent",
+    "content": "Phase 4: End to End Testing",
     "status": "completed"
   }
 ]

@@ -290,6 +290,124 @@ class DirectorLevel(BaseModel):
     subtitle: str
     emoji: str
 
+# ============ LIP SYNC WORKSHOP DATA ============
+LIPSYNC_STEPS_DATA = [
+    {
+        "order": 1,
+        "icon": "T",
+        "title": "Method 1: Text to Lip Sync",
+        "subtitle": "~VEO 3.1",
+        "description": "Generate lip-synced video directly from text input using VEO 3.1.",
+        "actionItems": [
+            "Access VEO 3.1 dashboard.",
+            "Input script text directly into the generator.",
+            "Select voice model and character profile.",
+            "Download this now Option: Copy and use the SAMPLE JSON Script provided below.",
+            "Generate video."
+        ],
+        "resources": [
+            {"label": "Google Vids", "url": "https://workspace.google.com/intl/en_in/products/vids/"}
+        ],
+        "prompts": [
+            {
+                "title": "SAMPLE JSON Script",
+                "body": "{\n  \"video_generation\": {\n    \"model\": \"Veo\",\n    \"prompt\": \"A high-fidelity 3D animated video featuring the boy from image_748e1f.png. He is walking confidently toward the camera along a sunlit park path as seen in watermarked_img_6168924431539087097.png. He maintains direct eye contact with the camera, gesturing naturally with his hands as he speaks. His facial expressions are lively and synchronized with the provided script. The lighting is bright and cinematic, capturing the textures of his blue and teal hoodie and messy brown hair. Smooth camera tracking maintains a medium shot of the character as he moves.\",\n    \"aspect_ratio\": \"16:9\",\n    \"audio\": {\n      \"mode\": \"text-to-speech\",\n      \"script\": \"Hey there! Welcome to Ai Film Making Workshop DAY 2. I am so glad to seeing you all creating stunning ai films & taking yourself to next level\",\n      \"voice_profile\": \"cheerful_young_boy\",\n      \"language\": \"en-US\"\n    },\n    \"character_consistency\": {\n      \"reference_image\": \"image_748e1f.png\",\n      \"maintain_features\": [\"messy brown hair\", \"blue and teal hoodie\", \"orange t-shirt\", \"brown eyes\"]\n    }\n  }\n}"
+            }
+        ],
+        "modules": None,
+        "interactive": None
+    },
+    {
+        "order": 2,
+        "icon": "IMG",
+        "title": "Method 2: Image to Lip Sync",
+        "subtitle": "VEO, Infinite Talks, Google Flow",
+        "description": "Multi-tool workflows for animating a static image. Select the appropriate module based on your required output.",
+        "actionItems": [],
+        "resources": [],
+        "prompts": [],
+        "interactive": {
+            "type": "choose_character",
+            "title": "Choose your Character",
+            "links": [
+                {"label": "Cartoon Character", "url": "#"},
+                {"label": "Human Character", "url": "#"}
+            ]
+        },
+        "geminiAssistant": True,
+        "modules": [
+            {
+                "id": "veo31",
+                "title": "Module 1: VEO 3.1",
+                "locked": False,
+                "actionItems": [
+                    "Take your frame.",
+                    "Write/restructure the JSON prompt.",
+                    "Go to Google VIDs.",
+                    "Enter the prompt & Insert the Image.",
+                    "Hit Generate."
+                ],
+                "resources": [
+                    {"label": "Google VIDs", "url": "https://workspace.google.com/intl/en_in/products/vids/"}
+                ]
+            },
+            {
+                "id": "infinite_talks",
+                "title": "Module 2: Infinite Talks for Long Videos",
+                "locked": True,
+                "actionItems": [],
+                "resources": []
+            },
+            {
+                "id": "google_flow",
+                "title": "Module 3: GOOGLE FLOW (Advance LipSync)",
+                "locked": True,
+                "actionItems": [],
+                "resources": []
+            }
+        ]
+    },
+    {
+        "order": 3,
+        "icon": "MIC",
+        "title": "Method 3: Audio to Lip Sync",
+        "subtitle": "Wan.video",
+        "description": "The primary workflow for creating lip-synced videos from a still character image and an audio file using Wan.video.",
+        "actionItems": [
+            "Navigate to Wan.video (https://create.wan.video/).",
+            "Check in to the platform to earn your free daily credits.",
+            "In the dashboard, click on 'Avatar' and select 'Speech to Video'.",
+            "Upload your chosen Character image.",
+            "Upload or record your target Audio file.",
+            "Review settings and hit 'Export'."
+        ],
+        "resources": [
+            {"label": "Wan.video", "url": "https://create.wan.video/"},
+            {"label": "Sample Character Image", "url": "#"},
+            {"label": "Sample Audio", "url": "#"}
+        ],
+        "prompts": [],
+        "modules": None,
+        "interactive": None
+    },
+    {
+        "order": 4,
+        "icon": "VID",
+        "title": "Method 4: Video to Lip Sync",
+        "subtitle": "Advanced Sub-Modules",
+        "description": "Advanced video-to-video lip sync techniques. Replace the dialogue and lip movements of an existing video.",
+        "actionItems": [],
+        "resources": [],
+        "prompts": [],
+        "modules": [
+            {"id": "seedance", "title": "Sub-Module: Seedance 2.0", "locked": True, "actionItems": [], "resources": []},
+            {"id": "ltx", "title": "Sub-Module: LTX", "locked": True, "actionItems": [], "resources": []},
+            {"id": "runway", "title": "Sub-Module: Runway Aleph", "locked": True, "actionItems": [], "resources": []}
+        ],
+        "interactive": None
+    }
+]
+
 # ============ SEED ON STARTUP ============
 @app.on_event("startup")
 async def seed_data():
@@ -300,7 +418,6 @@ async def seed_data():
         await db.steps.insert_many(STEPS_DATA)
         logger.info(f"Seeded {len(STEPS_DATA)} steps")
     else:
-        # Update existing data to ensure consistency
         for step in STEPS_DATA:
             await db.steps.update_one(
                 {"order": step["order"]},
@@ -322,6 +439,15 @@ async def seed_data():
                 upsert=True
             )
         logger.info(f"Updated {len(DIRECTOR_LEVELS)} director levels")
+    
+    # Seed lip sync steps
+    for step in LIPSYNC_STEPS_DATA:
+        await db.lipsync_steps.update_one(
+            {"order": step["order"]},
+            {"$set": step},
+            upsert=True
+        )
+    logger.info(f"Seeded/updated {len(LIPSYNC_STEPS_DATA)} lip sync steps")
 
 # ============ ROUTES ============
 @api_router.get("/")
@@ -350,6 +476,24 @@ async def get_director_levels():
     """Get all director levels"""
     levels = await db.director_levels.find({}, {"_id": 0}).sort("min_steps", 1).to_list(20)
     return levels
+
+# ============ LIP SYNC ROUTES ============
+@api_router.get("/lipsync/steps")
+async def get_lipsync_steps():
+    """Get minimal lip sync step data for sidebar"""
+    steps = await db.lipsync_steps.find(
+        {},
+        {"_id": 0, "order": 1, "icon": 1, "title": 1, "subtitle": 1}
+    ).sort("order", 1).to_list(20)
+    return steps
+
+@api_router.get("/lipsync/steps/{order}")
+async def get_lipsync_step(order: int):
+    """Get full lip sync step content"""
+    step = await db.lipsync_steps.find_one({"order": order}, {"_id": 0})
+    if not step:
+        raise HTTPException(status_code=404, detail="Lip sync step not found")
+    return step
 
 # ============ PROGRESS SYNC ROUTES ============
 class ProgressPayload(BaseModel):

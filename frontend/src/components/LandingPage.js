@@ -16,16 +16,16 @@ const CARDS = [
     bgGlow: "shadow-amber-500/10",
   },
   {
-    id: "coming-soon-2",
-    title: "Coming Soon",
-    description: "A new training module is being crafted. Stay tuned for something exciting.",
-    emoji: "🚀",
-    status: "coming_soon",
-    route: null,
-    gradient: "from-blue-500/10 to-cyan-500/10",
-    borderColor: "border-white/[0.08]",
-    accentColor: "text-blue-400",
-    bgGlow: "",
+    id: "lip-sync",
+    title: "LIP Sync Workflow",
+    description: "Step-by-step guide to creating lip-synced videos using VEO, Wan.video, Google Flow, and more. 4 methods covered.",
+    emoji: "🎤",
+    status: "active",
+    route: "/lip-sync",
+    gradient: "from-violet-500/20 to-purple-500/20",
+    borderColor: "border-violet-500/30",
+    accentColor: "text-violet-400",
+    bgGlow: "shadow-violet-500/10",
   },
   {
     id: "coming-soon-3",
@@ -149,7 +149,7 @@ export const LandingPage = () => {
 
                   {/* CTA */}
                   {isActive ? (
-                    <div className="flex items-center gap-2 text-sm font-medium text-amber-400 group-hover:gap-3 transition-all duration-200">
+                    <div className={`flex items-center gap-2 text-sm font-medium ${card.accentColor} group-hover:gap-3 transition-all duration-200`}>
                       Start Training
                       <ArrowRight className="w-4 h-4" />
                     </div>

@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { StepContent } from "@/components/StepContent";
 import { MobileHeader } from "@/components/MobileHeader";
 import { LandingPage } from "@/components/LandingPage";
+import { LipSyncWorkshop } from "@/components/LipSyncWorkshop";
 import { useWorkshopProgress } from "@/hooks/useWorkshopProgress";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -139,6 +140,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/workshop" element={<WorkshopPage />} />
+        <Route path="/lip-sync" element={<LipSyncWorkshop />} />
       </Routes>
       <Toaster position="bottom-right" theme="dark" />
     </BrowserRouter>
