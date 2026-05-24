@@ -394,15 +394,86 @@ LIPSYNC_STEPS_DATA = [
         "order": 4,
         "icon": "VID",
         "title": "Method 4: Video to Lip Sync",
-        "subtitle": "Advanced Sub-Modules",
-        "description": "Advanced video-to-video lip sync techniques. Replace the dialogue and lip movements of an existing video.",
+        "subtitle": "Seedance 2.0, LTX, Runway Aleph",
+        "description": "Advanced video-to-video lip sync techniques. Replace the dialogue and lip movements of an existing video using three powerful tools.",
         "actionItems": [],
         "resources": [],
         "prompts": [],
         "modules": [
-            {"id": "seedance", "title": "Sub-Module: Seedance 2.0", "locked": True, "actionItems": [], "resources": []},
-            {"id": "ltx", "title": "Sub-Module: LTX", "locked": True, "actionItems": [], "resources": []},
-            {"id": "runway", "title": "Sub-Module: Runway Aleph", "locked": True, "actionItems": [], "resources": []}
+            {
+                "id": "seedance",
+                "title": "Sub-Module: Seedance 2.0",
+                "locked": False,
+                "description": "ByteDance's multimodal video generator. Best for talking-head clips, singing avatars, and audio-driven motion with character consistency.",
+                "actionItems": [
+                    "Go to Seedance 2.0 platform.",
+                    "Upload a clear, front-facing character image or short video clip.",
+                    "Upload your target audio file (dialogue, voiceover, or song).",
+                    "Write a focused prompt describing the character, action, camera angle, and reference the audio for lip sync.",
+                    "Hit Generate and wait for the output.",
+                    "Review the result \u2014 if sync is off, re-record with clearer pacing or try a tighter crop."
+                ],
+                "resources": [
+                    {"label": "Seedance 2.0", "url": "https://seedance2.ai"},
+                    {"label": "Seedance (ByteDance)", "url": "https://seed.bytedance.com/en/seedance2_0"}
+                ],
+                "prompts": [
+                    {
+                        "title": "Seedance Lip Sync Prompt Template",
+                        "body": "Use @Image1 as the character reference, @Audio1 for lip sync.\n\nPortrait of the character speaking directly to camera in a softly lit room. Natural lip sync with subtle facial expressions, gentle head movement, and natural blinking. Steady close-up framing, cinematic realism, shallow depth of field.\n\nTips:\n- Keep audio clean and well-paced\n- Use front-facing or 3/4 angle shots\n- Short sentences sync better than long ones\n- Leave natural pauses in the audio"
+                    }
+                ]
+            },
+            {
+                "id": "ltx",
+                "title": "Sub-Module: LTX Studio",
+                "locked": False,
+                "description": "LTX Studio's Audio-to-Video pipeline. Supports multi-speaker scenes, automatic phoneme analysis, and built-in voice library.",
+                "actionItems": [
+                    "Open LTX Studio and go to Gen Space.",
+                    "Select Video tab \u2192 Audio-to-Video.",
+                    "Upload your audio file (MP3, WAV, AAC supported).",
+                    "Add a visual prompt describing: character appearance, scene, camera angle, and environment.",
+                    "Optionally upload a start frame image for character consistency.",
+                    "Generate the video \u2014 LTX analyzes audio phonemes and creates matching mouth movement.",
+                    "For multi-speaker scenes: define each character in Elements, assign distinct voices, and generate separately."
+                ],
+                "resources": [
+                    {"label": "LTX Studio", "url": "https://ltx.studio"},
+                    {"label": "LTX Lip Sync Guide", "url": "https://ltx.studio/blog/lip-sync-ai"}
+                ],
+                "prompts": [
+                    {
+                        "title": "LTX Audio-to-Video Prompt",
+                        "body": "Character: [Describe character appearance in detail]\nScene: [Describe environment and lighting]\nCamera: Close-up, front-facing, steady shot\nAction: Speaking directly to camera with natural expressions\nAudio Reference: [Your uploaded audio file]\n\nNotes:\n- Keep face large in frame for best sync\n- Use consistent lighting between source and output\n- For dubbed content: generate translated audio with TTS first, then apply lip sync"
+                    }
+                ]
+            },
+            {
+                "id": "runway",
+                "title": "Sub-Module: Runway Aleph",
+                "locked": False,
+                "description": "Runway's Aleph for video editing + Lip Sync tool combo. Edit real video with text prompts, then apply precise lip sync. Supports up to 4 faces.",
+                "actionItems": [
+                    "Prep your source clip: clear face, good lighting, front-facing or 3/4 angle.",
+                    "Use Aleph to clean up and reframe the shot (remove distractions, fix lighting, create tighter framing).",
+                    "Open Runway Lip Sync tool from Dashboard \u2192 Create \u2192 Generate Audio \u2192 Lip Sync.",
+                    "Upload your edited clip or still image. Wait for face detection.",
+                    "Add dialogue audio: use Text-to-Speech (pick a voice + enter script) or Upload Audio (your own file).",
+                    "Generate and review for mouth timing, face stability, and expression matching.",
+                    "If results are off: go back to Aleph to zoom closer, reduce motion, or simplify background, then re-run Lip Sync."
+                ],
+                "resources": [
+                    {"label": "Runway", "url": "https://runwayml.com"},
+                    {"label": "Runway Lip Sync Guide", "url": "https://help.runwayml.com/hc/en-us/articles/31941427186323-Creating-with-Lip-Sync"}
+                ],
+                "prompts": [
+                    {
+                        "title": "Aleph Cleanup Prompt (Before Lip Sync)",
+                        "body": "Create a clean close-up of the subject speaking. Keep original lighting and skin tones natural. Reduce background clutter. Cinematic realism. Minimal motion. Preserve subject identity and background composition.\n\nThen in Lip Sync:\n- Upload the Aleph-edited clip\n- Select detected face(s)\n- Add your dialogue via TTS or upload audio\n- Generate\n\nPipeline: Footage \u2192 Aleph cleanup/reframe \u2192 Lip Sync voice match \u2192 Export \u2192 Edit in timeline"
+                    }
+                ]
+            }
         ],
         "interactive": None
     }

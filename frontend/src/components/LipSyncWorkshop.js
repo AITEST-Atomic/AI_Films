@@ -258,25 +258,43 @@ const LipSyncStepContent = ({ stepData, loading, progress, onComplete, onPreviou
 
         {/* Modules (Step 2 & 4) */}
         {stepData.modules && stepData.modules.length > 0 && (
-          <div className="space-y-3 mb-6">
+          <div className="space-y-4 mb-6">
             {stepData.modules.map((mod) => (
-              <div key={mod.id} className={`rounded-2xl border p-5 transition-all ${mod.locked ? 'border-white/[0.06] bg-[#0d0e14] opacity-70' : 'border-white/[0.08] bg-white/[0.02]'}`}>
-                <div className="flex items-center justify-between mb-2">
+              <div key={mod.id} className={`rounded-2xl border transition-all ${mod.locked ? 'border-white/[0.06] bg-[#0d0e14] opacity-70 p-5' : 'border-violet-500/15 bg-white/[0.02] overflow-hidden'}`}>
+                {/* Module header */}
+                <div className={`flex items-center justify-between ${mod.locked ? '' : 'px-5 pt-5 pb-3'}`}>
                   <h4 className="text-sm font-semibold text-zinc-100">{mod.title}</h4>
                   {mod.locked && <Lock className="w-4 h-4 text-amber-400" />}
                 </div>
+                {/* Module description */}
+                {!mod.locked && mod.description && (
+                  <p className="text-sm text-zinc-400 leading-relaxed px-5 mb-4">{mod.description}</p>
+                )}
+                {/* Module action items */}
                 {!mod.locked && mod.actionItems && mod.actionItems.length > 0 && (
-                  <div className="space-y-2 mt-3">
-                    {mod.actionItems.map((item, i) => (
-                      <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-white/[0.02]">
-                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-violet-500 text-white text-[10px] font-semibold flex-shrink-0">{i + 1}</div>
-                        <p className="text-sm text-zinc-200 pt-0.5">{item}</p>
-                      </div>
+                  <div className="px-5 mb-4">
+                    <p className="text-[10px] font-semibold text-zinc-500 uppercase tracking-wider mb-2">Action Items</p>
+                    <div className="space-y-2">
+                      {mod.actionItems.map((item, i) => (
+                        <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-white/[0.02]">
+                          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-violet-500 text-white text-[10px] font-semibold flex-shrink-0">{i + 1}</div>
+                          <p className="text-sm text-zinc-200 pt-0.5">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {/* Module prompts */}
+                {!mod.locked && mod.prompts && mod.prompts.length > 0 && (
+                  <div className="px-5 mb-4">
+                    {mod.prompts.map((p, i) => (
+                      <LipSyncPromptBlock key={i} title={p.title} body={p.body} />
                     ))}
                   </div>
                 )}
+                {/* Module resources */}
                 {!mod.locked && mod.resources && mod.resources.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
+                  <div className="flex flex-wrap gap-2 px-5 pb-5">
                     {mod.resources.map((r, i) => (
                       <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-violet-500/20 bg-violet-500/[0.04] text-xs text-zinc-200 hover:bg-violet-500/[0.08] transition-colors">
                         {r.label} <ExternalLink className="w-3 h-3 text-zinc-400" />
