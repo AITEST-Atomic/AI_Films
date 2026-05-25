@@ -11,10 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY backend/requirements.production.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
-# Copy backend source and production env
-COPY backend/server.py backend/.env.production ./
-# Rename production env to .env
-RUN if [ -f .env.production ]; then mv .env.production .env; fi
+# Copy backend source
+# No .env file needed — docker-compose injects env vars directly
+COPY backend/server.py ./
 
 EXPOSE 8001
 
