@@ -29,6 +29,7 @@ backend/*.pyc
 backend/.pytest_cache
 backend/venv
 backend/.venv
+backend/requirements.txt
 
 # Logs
 *.log

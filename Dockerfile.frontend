@@ -27,32 +27,27 @@ ENV REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
 RUN yarn build
 
 # ============================================
-# Stage 2: Python Backend
+# Stage 2: Python Backend (NOT used by docker-compose, kept for reference)
 # ============================================
 FROM python:3.11-slim AS backend
 
-WORKDIR /app/backend
+WORKDIR /app
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy and install Python dependencies
-COPY backend/requirements.production.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+COPY backend/requirements.production.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
-# Copy backend source
-COPY backend/ ./
+COPY backend/server.py backend/.env.production ./
+RUN if [ -f .env.production ]; then mv .env.production .env; fi
 
-# Expose backend port
 EXPOSE 8001
 
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:8001/api/ || exit 1
 
-# Run uvicorn
 CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "2", "--log-level", "info"]
 
 # ============================================

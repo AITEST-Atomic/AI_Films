@@ -7,12 +7,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy and install Python dependencies
-COPY backend/requirements.production.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy ONLY the production requirements and install
+COPY backend/requirements.production.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
-# Copy backend source
-COPY backend/ ./
+# Copy backend source (excluding dev requirements via .dockerignore)
+COPY backend/server.py backend/.env.production ./
+# Rename production env
+RUN if [ -f .env.production ]; then mv .env.production .env; fi
 
 EXPOSE 8001
 
