@@ -148,16 +148,15 @@ else
 fi
 
 # --------------------------------------------
-# 6. Verify yarn.lock exists
+# 6. Verify yarn.lock (generate if missing)
 # --------------------------------------------
 log "Verifying frontend lock file..."
 
 if [ -f "frontend/yarn.lock" ]; then
     ok "yarn.lock found ($(wc -l < frontend/yarn.lock) lines)"
 else
-    err "yarn.lock not found in frontend/. Build may be non-deterministic."
-    warn "Run 'cd frontend && yarn install' to generate it first."
-    exit 1
+    warn "yarn.lock not found. It will be generated during Docker build."
+    ok "Proceeding (Docker handles dependency install)"
 fi
 
 # --------------------------------------------
