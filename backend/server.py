@@ -567,55 +567,48 @@ VFX_STEPS_DATA = [
     }
 ]
 
+# ============ HELPER: DEDUPLICATE & SEED ============
+async def deduplicate_and_seed(collection, data, key_field="order"):
+    """Remove duplicates, create unique index, and upsert seed data."""
+    # 1. Remove duplicates: keep only one document per key value
+    pipeline = [
+        {"$group": {"_id": f"${key_field}", "ids": {"$push": "$_id"}, "count": {"$sum": 1}}},
+        {"$match": {"count": {"$gt": 1}}}
+    ]
+    async for group in collection.aggregate(pipeline):
+        # Keep the first, delete the rest
+        ids_to_delete = group["ids"][1:]
+        if ids_to_delete:
+            await collection.delete_many({"_id": {"$in": ids_to_delete}})
+            logger.info(f"Removed {len(ids_to_delete)} duplicate(s) in {collection.name} for {key_field}={group['_id']}")
+
+    # 2. Remove any documents with order values not in seed data
+    valid_keys = [item[key_field] for item in data]
+    deleted = await collection.delete_many({key_field: {"$nin": valid_keys}})
+    if deleted.deleted_count > 0:
+        logger.info(f"Removed {deleted.deleted_count} stale document(s) from {collection.name}")
+
+    # 3. Ensure unique index on key field
+    await collection.create_index(key_field, unique=True, background=True)
+
+    # 4. Upsert each item
+    for item in data:
+        await collection.update_one(
+            {key_field: item[key_field]},
+            {"$set": item},
+            upsert=True
+        )
+    logger.info(f"Seeded/updated {len(data)} documents in {collection.name}")
+
+
 # ============ SEED ON STARTUP ============
 @app.on_event("startup")
 async def seed_data():
-    """Seed steps data on startup (idempotent)"""
-    existing = await db.steps.count_documents({})
-    if existing == 0:
-        logger.info("Seeding steps data...")
-        await db.steps.insert_many(STEPS_DATA)
-        logger.info(f"Seeded {len(STEPS_DATA)} steps")
-    else:
-        for step in STEPS_DATA:
-            await db.steps.update_one(
-                {"order": step["order"]},
-                {"$set": step},
-                upsert=True
-            )
-        logger.info(f"Updated {len(STEPS_DATA)} steps")
-    
-    # Seed director levels
-    existing_levels = await db.director_levels.count_documents({})
-    if existing_levels == 0:
-        await db.director_levels.insert_many(DIRECTOR_LEVELS)
-        logger.info(f"Seeded {len(DIRECTOR_LEVELS)} director levels")
-    else:
-        for level in DIRECTOR_LEVELS:
-            await db.director_levels.update_one(
-                {"min_steps": level["min_steps"]},
-                {"$set": level},
-                upsert=True
-            )
-        logger.info(f"Updated {len(DIRECTOR_LEVELS)} director levels")
-    
-    # Seed lip sync steps
-    for step in LIPSYNC_STEPS_DATA:
-        await db.lipsync_steps.update_one(
-            {"order": step["order"]},
-            {"$set": step},
-            upsert=True
-        )
-    logger.info(f"Seeded/updated {len(LIPSYNC_STEPS_DATA)} lip sync steps")
-
-    # Seed VFX workspace steps
-    for step in VFX_STEPS_DATA:
-        await db.vfx_steps.update_one(
-            {"order": step["order"]},
-            {"$set": step},
-            upsert=True
-        )
-    logger.info(f"Seeded/updated {len(VFX_STEPS_DATA)} VFX steps")
+    """Seed all collections on startup (idempotent, deduplicates)"""
+    await deduplicate_and_seed(db.steps, STEPS_DATA, "order")
+    await deduplicate_and_seed(db.director_levels, DIRECTOR_LEVELS, "min_steps")
+    await deduplicate_and_seed(db.lipsync_steps, LIPSYNC_STEPS_DATA, "order")
+    await deduplicate_and_seed(db.vfx_steps, VFX_STEPS_DATA, "order")
 
 # ============ ROUTES ============
 @api_router.get("/")
