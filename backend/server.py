@@ -92,7 +92,7 @@ STEPS_DATA = [
             }
         ],
         "resources": [
-            {"label": "Custom GPT: Video AI by Invideo", "url": "https://chatgpt.com/g/g-1PYz1gKIm-video-ai-by-invideo"}
+            {"label": "Custom GPT: Video AI by Invideo", "url": "https://chatgpt.com/g/g-h8l4uLHFQ-video-ai-by-invideo"}
         ]
     },
     {
