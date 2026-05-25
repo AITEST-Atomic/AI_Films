@@ -27,7 +27,7 @@ ENV REACT_APP_BACKEND_URL=${REACT_APP_BACKEND_URL}
 RUN yarn build
 
 # ============================================
-# Stage 2: Python Backend (NOT used by docker-compose, kept for reference)
+# Stage 2: Python Backend (separate service in docker-compose)
 # ============================================
 FROM python:3.11-slim AS backend
 
@@ -55,22 +55,36 @@ CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8001", "--workers"
 # ============================================
 FROM nginx:1.27-alpine AS frontend
 
-# Remove default nginx config
+# Remove default nginx config and html
 RUN rm -rf /etc/nginx/conf.d/default.conf /usr/share/nginx/html/*
 
-# Copy custom nginx config
+# Copy main nginx.conf (http block, gzip, security headers)
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy entrypoint script (generates /etc/nginx/conf.d/default.conf at runtime)
+COPY nginx/entrypoint.sh /docker-entrypoint-custom.sh
+RUN chmod +x /docker-entrypoint-custom.sh
+
+# Copy config templates
+COPY nginx/templates/ /etc/nginx/templates/
 
 # Copy built frontend from builder stage
 COPY --from=frontend-builder /app/frontend/build /usr/share/nginx/html
 
-# Create directories for SSL certificates (placeholder)
+# Create directory for SSL certificates (volume mount target)
 RUN mkdir -p /etc/nginx/ssl
 
 EXPOSE 80 443
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:80/ || exit 1
+# Environment variable defaults (override via docker-compose)
+ENV SERVER_NAME=_
+ENV EXTERNAL_HTTP_PORT=80
+ENV EXTERNAL_HTTPS_PORT=443
+ENV SSL_ENABLED=auto
 
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:80/health || exit 1
+
+# Custom entrypoint generates config, then starts nginx
+ENTRYPOINT ["/docker-entrypoint-custom.sh"]
 CMD ["nginx", "-g", "daemon off;"]

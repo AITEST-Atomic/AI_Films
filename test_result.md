@@ -101,3 +101,87 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Correct docker setup for nginx HTTPS access on custom ports. Fix nginx config, Dockerfile, docker-compose, and setup script to support flexible HTTPS on custom ports with auto-detection of SSL certificates."
+
+backend:
+  - task: "API root endpoint"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "GET /api/ returns OK. Verified via curl."
+
+  - task: "Steps list endpoint"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "GET /api/steps returns 8 steps. Verified via curl."
+
+  - task: "Steps detail endpoint"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Existing endpoint, needs regression test."
+
+  - task: "Director levels endpoint"
+    implemented: true
+    working: true
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Existing endpoint, needs regression test."
+
+frontend:
+  - task: "Landing page with training cards"
+    implemented: true
+    working: true
+    file: "frontend/src/components/LandingPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Preview screenshot shows landing page rendering correctly."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "API root endpoint"
+    - "Steps list endpoint"
+    - "Steps detail endpoint"
+    - "Director levels endpoint"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Docker/nginx setup updated for HTTPS with custom port support. Backend APIs unchanged. Running regression tests to confirm nothing broken."
