@@ -4,7 +4,7 @@ import axios from 'axios';
 const STORAGE_KEY = 'afm_workshop_progress';
 const SESSION_KEY = 'afm_workshop_session_id';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 const API = `${BACKEND_URL}/api`;
 
 const generateSessionId = () => {

@@ -59,7 +59,7 @@ services:
       dockerfile: Dockerfile.frontend
       target: frontend
       args:
-        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL:-http://localhost}
+        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL:-}
     container_name: afm-frontend
     restart: unless-stopped
     ports:

@@ -149,17 +149,25 @@ if [[ "$CHANGE_SETTINGS" =~ ^[Yy]$ ]]; then
     echo "    - https://your-domain.com       (production with SSL)"
     echo "    - https://your-domain.com:${HTTPS_PORT}  (SSL with custom port)"
 
-    # Smart default
+    # Smart default — empty string = relative URLs via nginx proxy (recommended)
     if [ -n "$PREV_REACT_APP_BACKEND_URL" ]; then
         DEFAULT_URL="$PREV_REACT_APP_BACKEND_URL"
-    elif [ "$HTTP_PORT" = "80" ]; then
-        DEFAULT_URL="http://localhost"
     else
-        DEFAULT_URL="http://localhost:${HTTP_PORT}"
+        DEFAULT_URL=""
     fi
 
-    read -rp "  Backend URL [${DEFAULT_URL}]: " INPUT
-    export REACT_APP_BACKEND_URL="${INPUT:-$DEFAULT_URL}"
+    echo ""
+    echo -e "  ${GREEN}Recommended: leave empty${NC} (uses relative URLs via nginx proxy)."
+    echo "  This works with any domain, port, or protocol automatically."
+    echo "  Only set a full URL if the backend is on a separate server."
+    echo ""
+
+    read -rp "  Backend URL [${DEFAULT_URL:-<empty — recommended>}]: " INPUT
+    if [ -z "${INPUT+x}" ] || [ "$INPUT" = "" ]; then
+        export REACT_APP_BACKEND_URL="${DEFAULT_URL}"
+    else
+        export REACT_APP_BACKEND_URL="$INPUT"
+    fi
 
     echo ""
 else
@@ -173,11 +181,7 @@ else
     if [ -n "$PREV_REACT_APP_BACKEND_URL" ]; then
         export REACT_APP_BACKEND_URL="$PREV_REACT_APP_BACKEND_URL"
     else
-        if [ "$HTTP_PORT" = "80" ]; then
-            export REACT_APP_BACKEND_URL="http://localhost"
-        else
-            export REACT_APP_BACKEND_URL="http://localhost:${HTTP_PORT}"
-        fi
+        export REACT_APP_BACKEND_URL=""
     fi
 
     ok "Keeping existing configuration."
